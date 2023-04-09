@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "meltanolabs-target-chroma"
+version = "0.0.1"
+description = "`target-chroma` is a Singer target for Chroma, built with the Meltano Singer SDK."
+readme = "README.md"
+authors = ["AJ Steers, Meltano"]
+keywords = [
+    "ELT",
+    "Chroma",
+]
+license = "Apache 2.0"
+packages = [
+    { include = "target_chroma" },
+]
+
+[tool.poetry.dependencies]
+python = "<3.12,>=3.8"
+singer-sdk = { version="^0.23.0" }
+fs-s3fs = { version = "^1.1.1", optional = true }
+requests = "^2.28.2"
+chromadb = "^0.3.21"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.1"
+flake8 = "^5.0.4"
+darglint = "^1.8.1"
+black = "^23.1.0"
+pyupgrade = "^3.3.1"
+mypy = "^1.0.0"
+isort = "^5.11.5"
+singer-sdk = { version="^0.23.0", extras = ["testing"] }
+types-requests = "^2.28.11.12"
+
+[tool.poetry.extras]
+s3 = ["fs-s3fs"]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3 # Vertical Hanging Indent
+src_paths = "target_chroma"
+
+[build-system]
+requires = ["poetry-core>=1.0.8"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+# CLI declaration
+target-chroma = 'target_chroma.target:TargetChroma.cli'
