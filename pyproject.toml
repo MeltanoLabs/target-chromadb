@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "meltanolabs-target-chroma"
+name = "meltanolabs-target-chromadb"
 version = "0.0.1"
-description = "`target-chroma` is a Singer target for Chroma, built with the Meltano Singer SDK."
+description = "`target-chromadb` is a Singer target for Chroma, built with the Meltano Singer SDK."
 readme = "README.md"
 authors = ["AJ Steers, Meltano"]
 keywords = [
@@ -10,7 +10,7 @@ keywords = [
 ]
 license = "Apache 2.0"
 packages = [
-    { include = "target_chroma" },
+    { include = "target_chromadb" },
 ]
 
 [tool.poetry.dependencies]
@@ -37,7 +37,7 @@ s3 = ["fs-s3fs"]
 [tool.isort]
 profile = "black"
 multi_line_output = 3 # Vertical Hanging Indent
-src_paths = "target_chroma"
+src_paths = "target_chromadb"
 
 [build-system]
 requires = ["poetry-core>=1.0.8"]
@@ -45,4 +45,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 # CLI declaration
-target-chroma = 'target_chroma.target:TargetChroma.cli'
+target-chromadb = 'target_chromadb.target:TargetChroma.cli'

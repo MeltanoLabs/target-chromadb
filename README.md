@@ -1,6 +1,6 @@
-# target-chroma
+# target-chromadb
 
-`target-chroma` is a Singer target for Chroma.
+`target-chromadb` is a Singer target for Chroma.
 
 Build with the [Meltano Target SDK](https://sdk.meltano.com).
 
@@ -13,13 +13,13 @@ Developer TODO: Update the below as needed to correctly describe the install pro
 Install from PyPi:
 
 ```bash
-pipx install target-chroma
+pipx install target-chromadb
 ```
 
 Install from GitHub:
 
 ```bash
-pipx install git+https://github.com/ORG_NAME/target-chroma.git@main
+pipx install git+https://github.com/ORG_NAME/target-chromadb.git@main
 ```
 
 -->
@@ -34,7 +34,7 @@ Developer TODO: Provide a list of config options accepted by the target.
 This section can be created by copy-pasting the CLI output from:
 
 ```
-target-chroma --about --format=markdown
+target-chromadb --about --format=markdown
 ```
 -->
 
@@ -42,7 +42,7 @@ A full list of supported settings and capabilities for this
 target is available by running:
 
 ```bash
-target-chroma --about
+target-chromadb --about
 ```
 
 ### Configure using environment variables
@@ -59,15 +59,15 @@ Developer TODO: If your target requires special access on the destination system
 
 ## Usage
 
-You can easily run `target-chroma` by itself or in a pipeline using [Meltano](https://meltano.com/).
+You can easily run `target-chromadb` by itself or in a pipeline using [Meltano](https://meltano.com/).
 
 ### Executing the Target Directly
 
 ```bash
-target-chroma --version
-target-chroma --help
+target-chromadb --version
+target-chromadb --help
 # Test using the "Carbon Intensity" sample:
-tap-carbon-intensity | target-chroma --config /path/to/target-chroma-config.json
+tap-carbon-intensity | target-chromadb --config /path/to/target-chromadb-config.json
 ```
 
 ## Developer Resources
@@ -83,17 +83,17 @@ poetry install
 
 ### Create and Run Tests
 
-Create tests within the `target_chroma/tests` subfolder and
-  then run:
+Create tests within the `target_chromadb/tests` subfolder and
+then run:
 
 ```bash
 poetry run pytest
 ```
 
-You can also test the `target-chroma` CLI interface directly using `poetry run`:
+You can also test the `target-chromadb` CLI interface directly using `poetry run`:
 
 ```bash
-poetry run target-chroma --help
+poetry run target-chromadb --help
 ```
 
 ### Testing with [Meltano](https://meltano.com/)
@@ -113,7 +113,7 @@ Next, install Meltano (if you haven't already) and any needed plugins:
 # Install meltano
 pipx install meltano
 # Initialize meltano within this directory
-cd target-chroma
+cd target-chromadb
 meltano install
 ```
 
@@ -121,9 +121,9 @@ Now you can test and orchestrate using Meltano:
 
 ```bash
 # Test invocation:
-meltano invoke target-chroma --version
+meltano invoke target-chromadb --version
 # OR run a test `elt` pipeline with the Carbon Intensity sample tap:
-meltano elt tap-carbon-intensity target-chroma
+meltano elt tap-carbon-intensity target-chromadb
 ```
 
 ### SDK Dev Guide

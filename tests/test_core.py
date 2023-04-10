@@ -1,12 +1,11 @@
 """Tests standard target features using the built-in SDK tests library."""
 
-import pytest
-from typing import Dict, Any
+from typing import Any, Dict
 
+import pytest
 from singer_sdk.testing import get_target_test_class
 
-from target_chroma.target import TargetChroma
-
+from target_chromadb.target import TargetChroma
 
 SAMPLE_CONFIG: Dict[str, Any] = {
     # TODO: Initialize minimal target config
@@ -15,8 +14,7 @@ SAMPLE_CONFIG: Dict[str, Any] = {
 
 # Run standard built-in target tests from the SDK:
 StandardTargetTests = get_target_test_class(
-    target_class=TargetChroma,
-    config=SAMPLE_CONFIG
+    target_class=TargetChroma, config=SAMPLE_CONFIG
 )
 
 

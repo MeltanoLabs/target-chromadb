@@ -1,14 +1,14 @@
 version: 1
 send_anonymous_usage_stats: true
-project_id: "target-chroma"
+project_id: "target-chromadb"
 default_environment: test
 environments:
 - name: test
 plugins:
   extractors: []
   loaders:
-  - name: "target-chroma"
-    namespace: "target_chroma"
+  - name: "target-chromadb"
+    namespace: "target_chromadb"
     pip_url: -e .
     capabilities:
     - about

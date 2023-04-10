@@ -1,1 +1,1 @@
-"""Test suite for target-chroma."""
+"""Test suite for target-chromadb."""
