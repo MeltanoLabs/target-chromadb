@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import chromadb
 from singer_sdk.sinks import BatchSink
 
 
@@ -19,10 +20,48 @@ class ChromaSink(BatchSink):
         Args:
             context: Stream partition or context dictionary.
         """
-        # Sample:
-        # ------
-        # batch_key = context["batch_id"]
-        # context["file_path"] = f"{batch_key}.csv"
+        self.client = chromadb.Client(
+            chromadb.config.Settings(
+                chroma_db_impl="duckdb+parquet",
+                persist_directory=self.chroma_directory,
+            )
+        )
+        # try:
+        self.collection = self.client.create_collection(
+            self.collection_name,
+            embedding_function=self.embedding_function,
+            get_or_create=True,
+        )
+        # except ValueError as ex:
+        #     self.logger.warn(str(ex))
+        #     self.collection = self.client.get_collection(
+        #         self.config["collection_name"],
+        #         embedding_function=self.embedding_function,
+        #     )
+
+    @property
+    def embedding_function(self) -> str | None:
+        return None
+
+    @property
+    def collection_name(self) -> str:
+        return self.config["collection_name"]
+
+    @property
+    def chroma_directory(self) -> str:
+        return self.config["db_directory"]
+
+    @property
+    def document_text_property(self) -> str:
+        return self.config["document_text_property"]
+
+    @property
+    def metadata_property(self) -> str:
+        return self.config["metadata_property"]
+
+    @property
+    def embeddings_property(self) -> str:
+        return self.config["embeddings_property"]
 
     def process_record(self, record: dict, context: dict) -> None:
         """Process the record.
@@ -34,10 +73,12 @@ class ChromaSink(BatchSink):
             record: Individual record in the stream.
             context: Stream partition or context dictionary.
         """
-        # Sample:
-        # ------
-        # with open(context["file_path"], "a") as csvfile:
-        #     csvfile.write(record)
+        self.collection.add(
+            embeddings=[record[self.embeddings_property]],
+            metadatas=[record[self.metadata_property]],
+            documents=[record[self.document_text_property]],
+            ids=[":".join([record[key] for key in self.key_properties])],
+        )
 
     def process_batch(self, context: dict) -> None:
         """Write out any prepped records and return once fully written.

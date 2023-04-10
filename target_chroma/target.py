@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from singer_sdk.target_base import Target
 from singer_sdk import typing as th
+from singer_sdk.target_base import Target
 
 from target_chroma.sinks import (
     ChromaSink,
@@ -17,20 +17,35 @@ class TargetChroma(Target):
 
     config_jsonschema = th.PropertiesList(
         th.Property(
-            "filepath",
+            "collection_name",
             th.StringType,
-            description="The path to the target output file"
+            required=True,
+            default="vector-db",
         ),
         th.Property(
-            "file_naming_scheme",
+            "db_directory",
             th.StringType,
-            description="The scheme with which output files will be named"
+            required=True,
+            default="output",
         ),
         th.Property(
-            "auth_token",
+            "document_text_property",
             th.StringType,
-            secret=True,  # Flag config as protected.
-            description="The path to the target output file"
+            description="The property containing the document text.",
+            default="page_content",
+            required=True,
+        ),
+        th.Property(
+            "embeddings_property",
+            th.StringType,
+            description="The property containing the embeddings.",
+            default="embeddings",
+        ),
+        th.Property(
+            "metadata_property",
+            th.StringType,
+            description="The property containing the document metadata.",
+            default="metadata",
         ),
     ).to_dict()
 
