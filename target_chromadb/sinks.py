@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+
 import chromadb
 from singer_sdk.sinks import BatchSink
 
@@ -10,6 +12,10 @@ class ChromaSink(BatchSink):
     """Chroma target sink class."""
 
     max_size = 10000  # Max records to write in one batch
+
+    @property
+    def embedding_function(self) -> str | None:
+        return None
 
     def start_batch(self, context: dict) -> None:
         """Start a batch.
@@ -26,22 +32,11 @@ class ChromaSink(BatchSink):
                 persist_directory=self.chroma_directory,
             )
         )
-        # try:
         self.collection = self.client.create_collection(
             self.collection_name,
             embedding_function=self.embedding_function,
             get_or_create=True,
         )
-        # except ValueError as ex:
-        #     self.logger.warn(str(ex))
-        #     self.collection = self.client.get_collection(
-        #         self.config["collection_name"],
-        #         embedding_function=self.embedding_function,
-        #     )
-
-    @property
-    def embedding_function(self) -> str | None:
-        return None
 
     @property
     def collection_name(self) -> str:
@@ -73,11 +68,19 @@ class ChromaSink(BatchSink):
             record: Individual record in the stream.
             context: Stream partition or context dictionary.
         """
+        # calculate an md5 hash of the document text
+        if not self.key_properties:
+            id = hashlib.md5(
+                record[self.document_text_property].encode("utf-8")
+            ).hexdigest()
+        else:
+            id = ":".join([record[key] for key in self.key_properties])
+
         self.collection.add(
             embeddings=[record[self.embeddings_property]],
             metadatas=[record[self.metadata_property]],
             documents=[record[self.document_text_property]],
-            ids=[":".join([record[key] for key in self.key_properties])],
+            ids=[id],
         )
 
     def process_batch(self, context: dict) -> None:
@@ -86,7 +89,4 @@ class ChromaSink(BatchSink):
         Args:
             context: Stream partition or context dictionary.
         """
-        # Sample:
-        # ------
-        # client.upload(context["file_path"])  # Upload file
-        # Path(context["file_path"]).unlink()  # Delete local copy
+        pass
