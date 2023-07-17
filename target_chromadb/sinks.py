@@ -74,7 +74,7 @@ class ChromaSink(BatchSink):
                 record[self.document_text_property].encode("utf-8")
             ).hexdigest()
         else:
-            id = ":".join([record[key] for key in self.key_properties])
+            id = ":".join([str(record[key]) for key in self.key_properties])
 
         self.collection.add(
             embeddings=[record[self.embeddings_property]],
